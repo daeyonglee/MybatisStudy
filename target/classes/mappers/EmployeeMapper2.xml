@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+                        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+                        
+<!-- 네임스페이스(사용영역) 설정 -->
+<mapper namespace="kr.or.kosta.ems.employee">
+	
+	<!-- 전체사원 조회를 위한 SQL 매핑 -->
+	<select id="listAll" resultType="Employee" >
+		SELECT employee_id                      AS "id", 
+		       first_name                       AS "firstName", 
+		       last_name                        AS "lastName", 
+		       email                            AS "email", 
+		       phone_number                     AS "phoneNumber", 
+		       TO_CHAR(hire_date, 'YYYY-MM-DD') AS "hireDate", 
+		       salary                           AS "salary" 
+		FROM   employees 
+		ORDER  BY hire_date ASC 
+	</select>
+	
+	<select id="read" parameterType="int" resultType="Employee">
+		SELECT employee_id                      "id", 
+		       first_name                       "firstName", 
+		       last_name                        "lastName", 
+		       email                            "email", 
+		       phone_number                     "phoneNumber", 
+		       TO_CHAR(hire_date, 'YYYY-MM-DD') "hireDate", 
+		       salary                           "salary" 
+		FROM   employees 
+		WHERE  employee_id = #{value}
+	</select>
+	
+	<select id="readByName" parameterType="string" resultType="kr.or.kosta.ems.employee.domain.Employee">
+		SELECT employee_id                      "id", 
+		       first_name                       "firstName", 
+		       last_name                        "lastName", 
+		       email                            "email", 
+		       phone_number                     "phoneNumber", 
+		       TO_CHAR(hire_date, 'YYYY-MM-DD') "hireDate", 
+		       salary                           "salary" 
+		  FROM employees
+		 WHERE last_name LIKE #{value} 
+	</select>
+	
+	<insert id="create" parameterType="kr.or.kosta.ems.employee.domain.Employee">
+		INSERT INTO employees 
+			            (employee_id, 
+			             first_name, 
+			             last_name, 
+			             email, 
+			             phone_number, 
+			             hire_date, 
+			             job_id, 
+			             salary, 
+			             manager_id, 
+			             department_id) 
+			VALUES     (employees_seq.nextval, 
+			            #{firstName}, 
+			            #{lastName}, 
+			            #{email}, 
+			            #{phoneNumber}, 
+			            TO_DATE(#{hireDate}, 'YYYY-MM-DD'), 
+			            #{jobId}, 
+			            #{salary}, 
+			            #{managerId}, 
+			            #{departmentId})
+	</insert>
+	
+	<update id="update" parameterType="kr.or.kosta.ems.employee.domain.Employee">
+		UPDATE employees
+		   SET first_name = #{firstName}
+		     , last_name  = #{lastName}
+		     , salary     = #{salary}
+		 WHERE employee_id = #{id} 
+	</update>
+	
+	<delete id="delete" parameterType="int">
+		DELETE 
+		  FROM employees
+		 WHERE employee_id = #{value}
+	</delete>		
+</mapper>
+
+
+
+
+

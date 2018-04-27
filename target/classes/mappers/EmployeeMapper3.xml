@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+                        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+                        
+<!-- 네임스페이스(사용영역) 설정 -->
+<mapper namespace="kr.or.kosta.ems.employee.mapper.EmployeeMapper">
+	
+	<!-- 전체사원 조회를 위한 SQL 매핑 -->
+	<select id="listAll" resultType="Employee" >
+		SELECT employee_id                      AS "id", 
+		       first_name                       AS "firstName", 
+		       last_name                        AS "lastName", 
+		       email                            AS "email", 
+		       phone_number                     AS "phoneNumber", 
+		       To_char(hire_date, 'YYYY-MM-DD') AS "hireDate", 
+		       salary                           AS "salary" 
+		FROM   employees 
+		ORDER  BY hire_date ASC 
+	</select>
+	
+	
+	<!-- 사원번호로 사원 조회 -->
+	<select id="read"  parameterType="int" resultType="Employee">
+		SELECT employee_id                      "id", 
+		       first_name                       "firstName", 
+		       last_name                        "lastName", 
+		       email                            "email", 
+		       phone_number                     "phoneNumber", 
+		       To_char(hire_date, 'YYYY-MM-DD') "hireDate", 
+		       salary                           "salary" 
+		FROM   employees 
+		WHERE  employee_id = #{value} 
+	</select>
+		
+</mapper>
